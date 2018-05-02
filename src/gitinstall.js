@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+'use strict';
+
 var Git = require("nodegit");
 var gitCredentialHelper = require('git-credential-helper');
 var exec = require('child_process').exec;
@@ -34,8 +37,6 @@ function copyFolderRecursiveSync( source, target ) {
             }
         } );
     }
-	
-	// });
 }
 
 function deleteFile(dir, file) {
@@ -148,21 +149,6 @@ function askLogin() {
 
 }
 
-
-function writeToFile( data ){  
-
-	var myJson = {
-		key: "myvalue"
-	};
-
-	fs.writeFile( "filename.json", JSON.stringify( myJson ), "utf8", yourCallback );
-
-	// And then, to read it...
-	myJson = require("./filename.json");
-
-
-}
-
 function cloneProcess( url, folderName, dstFolder, cloneOpts ){  
 
 	return new Promise(function(resolve, reject) {
@@ -173,10 +159,7 @@ function cloneProcess( url, folderName, dstFolder, cloneOpts ){
 				console.log( "current path: " + currentPath );
 				copyFolderRecursiveSync( currentPath + "/"+folderName+"/",  dstFolder );
 				deleteDirectory( currentPath + "/"+folderName+"/" ).then( function() { 
-				
-				
-						//resolve( repo );
-						
+ 
 						console.log( "npm install ..." );
 						execPromise( 'npm install', {cwd: "./node_modules/"+folderName} ).then(function( res ) { 
 						
@@ -194,15 +177,9 @@ function cloneProcess( url, folderName, dstFolder, cloneOpts ){
 						
 						
 						}).catch( function(err) { console.log(err); reject(err); } );
-						
-
+ 
 				});				
-			
-			
-				
-			
-			 
-			
+ 
 			})
 			.catch( function( err ) { console.log(err);  reject( err ) });
 
@@ -275,22 +252,11 @@ function gitInstall( url, folderName, dstFolder ) {
 							resolve( repo );
 					});
 				})
-				
-				  
-				
-			
+ 
 			}
 
 		}, { silent: true });		
-		
-		
-
-		
-
-		
-		
-		
-		
+ 
 		
 	});
  
@@ -301,4 +267,4 @@ function gitInstall( url, folderName, dstFolder ) {
 
 
 
-export { gitInstall }
+module.exports = gitInstall;
