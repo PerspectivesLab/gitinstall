@@ -149,7 +149,7 @@ function askLogin() {
 
 }
 
-function cloneProcess( url, folderName, dstFolder, cloneOpts ){  
+function cloneProcess( url, folderName, dstFolder, scriptName, cloneOpts ){  
 
 	return new Promise(function(resolve, reject) {
 			Git.Clone( url, "./"+folderName, cloneOpts )
@@ -166,7 +166,7 @@ function cloneProcess( url, folderName, dstFolder, cloneOpts ){
 							console.log( res );
 						
 							console.log( "building project..." );
-							execPromise( 'npm run build', {cwd: "./node_modules/"+folderName} ).then(function( res ) { 
+							execPromise( 'npm run '+ scriptName, {cwd: "./node_modules/"+folderName} ).then(function( res ) { 
 								
 								console.log( res );
 								//console.log( "project build !" );
@@ -188,7 +188,7 @@ function cloneProcess( url, folderName, dstFolder, cloneOpts ){
 }
  
  
-function gitInstall( url, folderName, dstFolder ) { 
+function gitInstall( url, folderName, dstFolder, scriptName ) { 
  
 	return new Promise(function(resolve, reject) {
 		 gitCredentialHelper.fill( url, function (err, data) {
@@ -229,7 +229,7 @@ function gitInstall( url, folderName, dstFolder ) {
 				
 				} 
 				
-				cloneProcess( url, folderName, dstFolder, cloneOpts ).then( function( repo ) {
+				cloneProcess( url, folderName, dstFolder, scriptName, cloneOpts ).then( function( repo ) {
 					resolve( repo );
 				});
  
@@ -248,7 +248,7 @@ function gitInstall( url, folderName, dstFolder ) {
 					};				
 				
 				
-					cloneProcess( url, folderName, dstFolder, cloneOpts ).then( function( repo ){
+					cloneProcess( url, folderName, dstFolder, scriptName, cloneOpts ).then( function( repo ){
 							resolve( repo );
 					});
 				})
