@@ -1,0 +1,27 @@
+{
+  "name": "gitinstall",
+  "version": "0.0.1",
+  "description": "git & install your dependencies",
+  "keywords": [
+    "git",
+    "install",
+    "gitinstall"
+  ],
+  "author": "Perspective[S]", 
+  "main": "src/gitinstall.js",
+  "bin": {
+     "gitinstall": "src/cli.js"
+  }, 
+  "repository": "PerspectivesLab/gitinstall",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PerspectivesLab/gitinstall/issues"
+  },
+  "scripts": {
+    "build": "webpack --mode production --env prod"
+  },
+  "devDependencies": {
+    "git-credential-helper": "0.0.1",
+    "nodegit": "0.22.0"
+  }
+}
