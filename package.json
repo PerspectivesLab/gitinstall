@@ -20,7 +20,7 @@
   "scripts": {
     "build": "webpack --mode production --env prod"
   },
-  "devDependencies": {
+  "dependencies": {
     "git-credential-helper": "0.0.1",
     "nodegit": "0.22.0"
   }
