@@ -17,13 +17,25 @@ function copyFileSync( source, target ) {
     fs.writeFileSync(targetFile, fs.readFileSync(source));
 }
 
-function copyFolderRecursiveSync( source, target ) {	
+function copyFolderRecursiveSync( source, target , createFolder ) {	
     var files = [];
-    //check if folder needs to be created or integrated
-    var targetFolder = path.join( target, path.basename( source ) );
-    if ( !fs.existsSync( targetFolder ) ) {
-        fs.mkdirSync( targetFolder );
-    }
+	
+	 
+	
+	var targetFolder = null;
+	if( !createFolder ){ 
+		targetFolder = target;
+	}else { 
+	
+		targetFolder = path.join( target, path.basename( source ) );
+		if ( !fs.existsSync( targetFolder ) ) {
+			fs.mkdirSync( targetFolder );
+		} 	
+	
+	
+	}
+	
+
 
     //copy
     if ( fs.lstatSync( source ).isDirectory() ) {
@@ -31,7 +43,7 @@ function copyFolderRecursiveSync( source, target ) {
         files.forEach( function ( file ) {
             var curSource = path.join( source, file );
             if ( fs.lstatSync( curSource ).isDirectory() ) {
-                copyFolderRecursiveSync( curSource, targetFolder );
+                copyFolderRecursiveSync( curSource, targetFolder, true );
             } else {
                 copyFileSync( curSource, targetFolder );
             }
@@ -149,39 +161,56 @@ function askLogin() {
 
 }
 
+
+function randomInt (low, high) {
+    return Math.floor(Math.random() * (high - low) + low);
+}
+
+
 function cloneProcess( url, folderName, dstFolder, scriptName, cloneOpts ){  
 
 	return new Promise(function(resolve, reject) {
-			Git.Clone( url, "./"+folderName, cloneOpts )
+		
+		
+			var tmpFolderName = "tmp"+randomInt(0,10000);
+			Git.Clone( url, "./"+tmpFolderName , cloneOpts )
 			.then( function(repo) { 
 			
 				var currentPath = process.cwd();
 				console.log( "current path: " + currentPath );
-				copyFolderRecursiveSync( currentPath + "/"+folderName+"/",  dstFolder );
-				deleteDirectory( currentPath + "/"+folderName+"/" ).then( function() { 
- 
-						console.log( "npm install ..." );
-						execPromise( 'npm install', {cwd: dstFolder+"/"+folderName} ).then(function( res ) { 
-						
+				copyFolderRecursiveSync( currentPath + "/"+tmpFolderName+"/",  dstFolder, folderName != null );
+				
+				if( folderName != null )
+					fs.renameSync( dstFolder + "/" + tmpFolderName  ,  dstFolder + "/" + folderName );
+				
+				deleteDirectory( currentPath + "/"+tmpFolderName+"/" ).then( function() { 
+				
+				
 							if( scriptName != null ) {
-								console.log( res );
+			 
+									console.log( "npm install ..." );
+									execPromise( 'npm install', {cwd: dstFolder+"/"+folderName} ).then(function( res ) { 
+									
+										
+											console.log( res );
 
-								console.log( "building project..." );
-								execPromise( 'npm run '+ scriptName, {cwd: dstFolder+"/"+folderName} ).then(function( res ) { 
+											console.log( "building project..." );
+											execPromise( 'npm run '+ scriptName, {cwd: dstFolder+"/"+folderName} ).then(function( res ) { 
 
-									console.log( res );
-									//console.log( "project build !" );
+												console.log( res );
+												//console.log( "project build !" );
 
-									resolve( repo );
+												resolve( repo );
 
-								}).catch( function(err) { console.log(err); reject(err); } );
-							
+											}).catch( function(err) { console.log(err); reject(err); } );
+			 
+									
+									}).catch( function(err) { console.log(err); reject(err); } );
+									
 							}else { 
 								resolve( repo );
-							}
+							}		
 						
-						
-						}).catch( function(err) { console.log(err); reject(err); } );
  
 				});				
  
