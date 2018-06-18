@@ -161,13 +161,13 @@ function cloneProcess( url, folderName, dstFolder, scriptName, cloneOpts ){
 				deleteDirectory( currentPath + "/"+folderName+"/" ).then( function() { 
  
 						console.log( "npm install ..." );
-						execPromise( 'npm install', {cwd: "./node_modules/"+folderName} ).then(function( res ) { 
+						execPromise( 'npm install', {cwd: dstFolder+"/"+folderName} ).then(function( res ) { 
 						
 							if( scriptName != null ) {
 								console.log( res );
 
 								console.log( "building project..." );
-								execPromise( 'npm run '+ scriptName, {cwd: "./node_modules/"+folderName} ).then(function( res ) { 
+								execPromise( 'npm run '+ scriptName, {cwd: dstFolder+"/"+folderName} ).then(function( res ) { 
 
 									console.log( res );
 									//console.log( "project build !" );
