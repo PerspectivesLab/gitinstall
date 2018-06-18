@@ -176,6 +176,8 @@ function cloneProcess( url, folderName, dstFolder, scriptName, cloneOpts ){
 
 								}).catch( function(err) { console.log(err); reject(err); } );
 							
+							}else { 
+								resolve( repo );
 							}
 						
 						
