@@ -163,17 +163,20 @@ function cloneProcess( url, folderName, dstFolder, scriptName, cloneOpts ){
 						console.log( "npm install ..." );
 						execPromise( 'npm install', {cwd: "./node_modules/"+folderName} ).then(function( res ) { 
 						
-							console.log( res );
-						
-							console.log( "building project..." );
-							execPromise( 'npm run '+ scriptName, {cwd: "./node_modules/"+folderName} ).then(function( res ) { 
-								
+							if( scriptName != null ) {
 								console.log( res );
-								//console.log( "project build !" );
-								
-								resolve( repo );
 
-							}).catch( function(err) { console.log(err); reject(err); } );
+								console.log( "building project..." );
+								execPromise( 'npm run '+ scriptName, {cwd: "./node_modules/"+folderName} ).then(function( res ) { 
+
+									console.log( res );
+									//console.log( "project build !" );
+
+									resolve( repo );
+
+								}).catch( function(err) { console.log(err); reject(err); } );
+							
+							}
 						
 						
 						}).catch( function(err) { console.log(err); reject(err); } );
