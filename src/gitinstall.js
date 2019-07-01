@@ -222,7 +222,7 @@ function cloneProcess( url, folderName, dstFolder, scriptName, cloneOpts ){
 }
  
  
-function gitInstall( url, folderName, dstFolder, scriptName ) { 
+function gitInstall( url, folderName, dstFolder, scriptName, branchName ) { 
  
 	return new Promise(function(resolve, reject) {
 		 gitCredentialHelper.fill( url, function (err, data) {
@@ -244,7 +244,9 @@ function gitInstall( url, folderName, dstFolder, scriptName ) {
 						  }
 						}
 					  }
-					};				
+					};	
+
+					if( branchName != null ) cloneOpts.checkoutBranch = branchName;
 				
 				
 				}else{ 
@@ -257,7 +259,9 @@ function gitInstall( url, folderName, dstFolder, scriptName ) {
 						  }
 						}
 					  }
-					};					
+					};	
+
+					if( branchName != null ) cloneOpts.checkoutBranch = branchName;
 				
 				
 				
@@ -279,7 +283,9 @@ function gitInstall( url, folderName, dstFolder, scriptName ) {
 						  }
 						}
 					  }
-					};				
+					};	
+
+					if( branchName != null ) cloneOpts.checkoutBranch = branchName;					
 				
 				
 					cloneProcess( url, folderName, dstFolder, scriptName, cloneOpts ).then( function( repo ){
