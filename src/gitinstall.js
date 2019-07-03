@@ -173,29 +173,29 @@ function cloneProcess( url, folderName, dstFolder, scriptName, cloneOpts ){
 		
 		
 			var tmpFolderName = "tmp"+randomInt(0,10000);
-			Git.Clone( url, "./"+tmpFolderName , cloneOpts )
+			Git.Clone( url, "./"+dstFolder , cloneOpts )
 			.then( function(repo) { 
 			
 				var currentPath = process.cwd();
 				console.log( "current path: " + currentPath );
-				copyFolderRecursiveSync( currentPath + "/"+tmpFolderName+"/",  dstFolder, folderName != null );
+				//copyFolderRecursiveSync( currentPath + "/"+tmpFolderName+"/",  dstFolder, folderName != null );
 				
-				if( folderName != null )
-					fs.renameSync( dstFolder  + tmpFolderName  ,  dstFolder  + folderName );
+				//if( folderName != null )
+				//	fs.renameSync( dstFolder  + tmpFolderName  ,  dstFolder  + folderName );
 				
-				deleteDirectory( currentPath + "/"+tmpFolderName+"/" ).then( function() { 
+				//deleteDirectory( currentPath + "/"+tmpFolderName+"/" ).then( function() { 
 				
 				
 							if( scriptName != null ) {
 			 
 									console.log( "npm install ..." );
-									execPromise( 'npm install', {cwd: dstFolder+folderName} ).then(function( res ) { 
+									execPromise( 'npm install', {cwd: "./"+dstFolder } ).then(function( res ) { 
 									
 										
 											console.log( res );
 
 											console.log( "building project..." );
-											execPromise( 'npm run '+ scriptName, {cwd: dstFolder+folderName} ).then(function( res ) { 
+											execPromise( 'npm run '+ scriptName, {cwd: "./"+dstFolder} ).then(function( res ) { 
 
 												console.log( res );
 												//console.log( "project build !" );
@@ -212,7 +212,7 @@ function cloneProcess( url, folderName, dstFolder, scriptName, cloneOpts ){
 							}		
 						
  
-				});				
+				//});				
  
 			})
 			.catch( function( err ) { console.log(err);  reject( err ) });
