@@ -181,7 +181,7 @@ function cloneProcess( url, folderName, dstFolder, scriptName, cloneOpts ){
 				copyFolderRecursiveSync( currentPath + "/"+tmpFolderName+"/",  dstFolder, folderName != null );
 				
 				if( folderName != null )
-					fs.renameSync( dstFolder + "/" + tmpFolderName  ,  dstFolder + "/" + folderName );
+					fs.renameSync( dstFolder  + tmpFolderName  ,  dstFolder  + folderName );
 				
 				deleteDirectory( currentPath + "/"+tmpFolderName+"/" ).then( function() { 
 				
@@ -189,13 +189,13 @@ function cloneProcess( url, folderName, dstFolder, scriptName, cloneOpts ){
 							if( scriptName != null ) {
 			 
 									console.log( "npm install ..." );
-									execPromise( 'npm install', {cwd: dstFolder+"/"+folderName} ).then(function( res ) { 
+									execPromise( 'npm install', {cwd: dstFolder+folderName} ).then(function( res ) { 
 									
 										
 											console.log( res );
 
 											console.log( "building project..." );
-											execPromise( 'npm run '+ scriptName, {cwd: dstFolder+"/"+folderName} ).then(function( res ) { 
+											execPromise( 'npm run '+ scriptName, {cwd: dstFolder+folderName} ).then(function( res ) { 
 
 												console.log( res );
 												//console.log( "project build !" );
