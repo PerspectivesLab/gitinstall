@@ -22,6 +22,6 @@
   },
   "dependencies": {
     "git-credential-helper": "0.0.1",
-    "nodegit": "0.24.3"
+    "nodegit": "0.25.0-alpha.15"
   }
 }
